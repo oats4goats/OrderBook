@@ -4,18 +4,6 @@
     {
         static void Main(string[] args)
         {
-            string tickerSymbol = string.Empty;
-            decimal accountMoney = 0M;
-            int accountStock = 0;
-
-            tickerSymbol = Initializer.SetTicker(tickerSymbol);
-            accountMoney = Initializer.SetBalanceMoney(accountMoney);
-            accountStock = Initializer.SetBalanceStock(accountStock);
-
-
-            Console.WriteLine($"tickerSymbol: {tickerSymbol}\n" +
-                $"accountMoney: {accountMoney}\n" +
-                $"accountStock: {accountStock}");
             //int.TryParse(iString, out i);
 
 
@@ -34,6 +22,19 @@
             - Биржа исполняет заявки
             - Биржа отображает текущее состояние стакана
             */
+
+            string tickerSymbol = string.Empty;
+            decimal accountMoney = 0M;
+            int accountStock = 0;
+
+            tickerSymbol = Initializer.SetTicker(tickerSymbol);
+            accountMoney = Initializer.SetBalanceMoney(accountMoney);
+            accountStock = Initializer.SetBalanceStock(accountStock);
+
+
+            Console.WriteLine($"tickerSymbol: {tickerSymbol}\n" +
+                $"accountMoney: {accountMoney}\n" +
+                $"accountStock: {accountStock}");
 
         }
     }
