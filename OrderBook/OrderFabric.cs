@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OrderBook
 {
-    internal class Initializer
+    internal class OrderFabric
     {
         public static string SetTicker()
         {
@@ -15,14 +14,14 @@ namespace OrderBook
 
             do
             {
-                Console.Write("Enter ticker's symbol: ");
-                output = Console.ReadLine(); 
-            } while (string.IsNullOrEmpty(output) || string.IsNullOrWhiteSpace(output));
-            
+                Console.Write("Enter ticker's symbol (MSFT): ");
+                output = Console.ReadLine();
+            } while (output != "MSFT");
+
             return output;
         }
 
-        public static decimal SetBalanceMoney()
+        public static decimal SetPrice()
         {
             decimal output;
             bool isValidNumber;
@@ -30,7 +29,7 @@ namespace OrderBook
 
             do
             {
-                Console.Write("Enter money balance: ");
+                Console.Write("Enter price: ");
                 outputString = Console.ReadLine();
                 isValidNumber = decimal.TryParse(outputString, out output);
             }
@@ -39,7 +38,7 @@ namespace OrderBook
             return output;
         }
 
-        public static int SetBalanceStock()
+        public static int SetShares()
         {
             int output;
             bool isValidNumber;
@@ -47,12 +46,31 @@ namespace OrderBook
 
             do
             {
-                Console.Write("Enter stock balance: ");
+                Console.Write("Enter number of shares: ");
                 outputString = Console.ReadLine();
                 isValidNumber = int.TryParse(outputString, out output);
             }
             while (isValidNumber == false || output <= 0);
 
+            return output;
+        }
+
+        public static string SetOrderType()
+        {
+            string output = string.Empty;
+
+            do
+            {
+                Console.Write("Enter order type (ask/bid): ");
+                output = Console.ReadLine();
+            } while (output != "ask" && output != "bid");
+
+            return output;
+        }
+
+        public static (string tickerSymbol, decimal price, int shares, string orderType) CreateOrder (string tickerSymbol, decimal price, int shares, string orderType)
+        {
+            (string tickerSymbol, decimal price, int shares, string orderType) output = (tickerSymbol, price, shares, orderType);
             return output;
         }
     }

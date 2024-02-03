@@ -6,7 +6,6 @@
         {
             //int.TryParse(iString, out i);
 
-
             /*
             Перед началом игры:
 
@@ -23,19 +22,32 @@
             - Биржа отображает текущее состояние стакана
             */
 
+            List<(string tickerSymbol, decimal price, int shares, string orderType)> orders = new();
+
             string tickerSymbol = string.Empty;
             decimal accountMoney = 0M;
             int accountStock = 0;
 
-            tickerSymbol = Initializer.SetTicker(tickerSymbol);
-            accountMoney = Initializer.SetBalanceMoney(accountMoney);
-            accountStock = Initializer.SetBalanceStock(accountStock);
+            tickerSymbol = Initializer.SetTicker();
+            accountMoney = Initializer.SetBalanceMoney();
+            accountStock = Initializer.SetBalanceStock();
 
-
-            Console.WriteLine($"tickerSymbol: {tickerSymbol}\n" +
+            Console.WriteLine($"\ntickerSymbol: {tickerSymbol}\n" +
                 $"accountMoney: {accountMoney}\n" +
-                $"accountStock: {accountStock}");
+                $"accountStock: {accountStock}\n");
 
+            var order = OrderFabric.CreateOrder(
+                OrderFabric.SetTicker(),
+                OrderFabric.SetPrice(),
+                OrderFabric.SetShares(),
+                OrderFabric.SetOrderType());
+
+            orders.Add(order);
+
+            (string col1, string col2) table = ("a", "b");
+
+            Console.WriteLine(table.GetType());
         }
     }
 }
+
