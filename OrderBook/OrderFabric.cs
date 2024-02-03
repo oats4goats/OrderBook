@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using orderTuple = (string tickerSymbol, decimal price, int shares, string orderType);
 
 namespace OrderBook
 {
@@ -12,13 +13,15 @@ namespace OrderBook
         {
             string output = string.Empty;
 
-            do
-            {
-                Console.Write("Enter ticker's symbol (MSFT): ");
-                output = Console.ReadLine();
-            } while (output != "MSFT");
+            //do
+            //{
+            //    Console.Write("Enter ticker's symbol (MSFT): ");
+            //    output = Console.ReadLine();
+            //} while (output != "MSFT");
 
-            return output;
+            //return output;
+
+            return "MSFT";
         }
 
         public static decimal SetPrice()
@@ -68,9 +71,9 @@ namespace OrderBook
             return output;
         }
 
-        public static (string tickerSymbol, decimal price, int shares, string orderType) CreateOrder (string tickerSymbol, decimal price, int shares, string orderType)
+        public static orderTuple CreateOrder (string tickerSymbol, decimal price, int shares, string orderType)
         {
-            (string tickerSymbol, decimal price, int shares, string orderType) output = (tickerSymbol, price, shares, orderType);
+            orderTuple output = (tickerSymbol, price, shares, orderType);
             return output;
         }
     }

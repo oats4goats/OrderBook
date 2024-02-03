@@ -1,4 +1,6 @@
-﻿namespace OrderBook
+﻿using orderTuple = (string tickerSymbol, decimal price, int shares, string orderType);
+
+namespace OrderBook
 {
     internal class Program
     {
@@ -22,7 +24,9 @@
             - Биржа отображает текущее состояние стакана
             */
 
-            List<(string tickerSymbol, decimal price, int shares, string orderType)> orders = new();
+            Dictionary<string, List<orderTuple>> orders = new ();
+            orders["ask"] = new List<orderTuple>();
+            orders["bid"] = new List<orderTuple> ();
 
             string tickerSymbol = string.Empty;
             decimal accountMoney = 0M;
@@ -36,14 +40,28 @@
                 $"accountMoney: {accountMoney}\n" +
                 $"accountStock: {accountStock}\n");
 
-            var order = OrderFabric.CreateOrder(
+
+            for (int i = 0; i < 8; i++)
+            {
+                orderTuple order = OrderFabric.CreateOrder(
                 OrderFabric.SetTicker(),
                 OrderFabric.SetPrice(),
                 OrderFabric.SetShares(),
                 OrderFabric.SetOrderType());
+                Console.WriteLine();
 
-            orders.Add(order);
+                OrderBook.Add(order, orders);
+            }
+
+            foreach (var item in orders["ask"])
+            {
+                Console.WriteLine($"orderType: {item.orderType}; tickerSymbol: {item.tickerSymbol}; shares: {item.shares}; price: {item.price}");
+            }
+
+            foreach (var item in orders["bid"])
+            {
+                Console.WriteLine($"orderType: {item.orderType}; tickerSymbol: {item.tickerSymbol}; shares: {item.shares}; price: {item.price}");
+            }
         }
     }
 }
-
