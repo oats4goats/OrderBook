@@ -43,10 +43,6 @@
                 OrderFabric.SetOrderType());
 
             orders.Add(order);
-
-            (string col1, string col2) table = ("a", "b");
-
-            Console.WriteLine(table.GetType());
         }
     }
 }
