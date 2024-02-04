@@ -6,8 +6,6 @@ namespace OrderBook
     {
         static void Main(string[] args)
         {
-            //int.TryParse(iString, out i);
-
             /*
             Перед началом игры:
 
@@ -40,28 +38,28 @@ namespace OrderBook
                 $"accountMoney: {accountMoney}\n" +
                 $"accountStock: {accountStock}\n");
 
+            // Debug
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    orderTuple order = OrderFabric.CreateOrder(
+            //    OrderFabric.SetTicker(),
+            //    OrderFabric.SetPrice(),
+            //    OrderFabric.SetShares(),
+            //    OrderFabric.SetOrderType());
+            //    Console.WriteLine();
 
-            for (int i = 0; i < 8; i++)
-            {
-                orderTuple order = OrderFabric.CreateOrder(
-                OrderFabric.SetTicker(),
-                OrderFabric.SetPrice(),
-                OrderFabric.SetShares(),
-                OrderFabric.SetOrderType());
-                Console.WriteLine();
+            //    OrderBook.Add(order, orders);
+            //}
 
-                OrderBook.Add(order, orders);
-            }
+            //foreach (var item in orders["ask"])
+            //{
+            //    Console.WriteLine($"orderType: {item.orderType}; tickerSymbol: {item.tickerSymbol}; shares: {item.shares}; price: {item.price}");
+            //}
 
-            foreach (var item in orders["ask"])
-            {
-                Console.WriteLine($"orderType: {item.orderType}; tickerSymbol: {item.tickerSymbol}; shares: {item.shares}; price: {item.price}");
-            }
-
-            foreach (var item in orders["bid"])
-            {
-                Console.WriteLine($"orderType: {item.orderType}; tickerSymbol: {item.tickerSymbol}; shares: {item.shares}; price: {item.price}");
-            }
+            //foreach (var item in orders["bid"])
+            //{
+            //    Console.WriteLine($"orderType: {item.orderType}; tickerSymbol: {item.tickerSymbol}; shares: {item.shares}; price: {item.price}");
+            //}
         }
     }
 }
