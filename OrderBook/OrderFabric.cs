@@ -13,15 +13,13 @@ namespace OrderBook
         {
             string output = string.Empty;
 
-            //do
-            //{
-            //    Console.Write("Enter ticker's symbol (MSFT): ");
-            //    output = Console.ReadLine();
-            //} while (output != "MSFT");
+            do
+            {
+                Console.Write("Enter ticker's symbol (MSFT): ");
+                output = Console.ReadLine();
+            } while (output != "MSFT");
 
-            //return output;
-
-            return "MSFT";
+            return output;
         }
 
         public static decimal SetPrice()
