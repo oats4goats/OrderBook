@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListRemove", "ListRemove\ListRemove.csproj", "{0EB4CA46-C698-4F25-B378-D13861541B5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0EB4CA46-C698-4F25-B378-D13861541B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EB4CA46-C698-4F25-B378-D13861541B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EB4CA46-C698-4F25-B378-D13861541B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EB4CA46-C698-4F25-B378-D13861541B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36153B87-166A-4799-BCA4-8F42E04177C5}
+	EndGlobalSection
+EndGlobal
