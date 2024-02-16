@@ -39,27 +39,30 @@ internal class Program
     static void Main(string[] args)
     {
         // Initialization
+        string tradingTicker = "MSFT";
         Account account = new Account(accountName: "MyAccount");
     
-        account.Deposit(asset: "MSFT", amount: 100);
-        account.Deposit(asset: "GOOG", amount: 100);
+        account.Deposit(asset: tradingTicker, amount: 100);
 
         OrderBook orderBook = new();
 
         // Debug
-        orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "ask", price: 150M, shares: 2));
-        orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "ask", price: 155M, shares: 5));
-        orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "ask", price: 165M, shares: 3));
-        orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "ask", price: 170M, shares: 1));
-        orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "bid", price: 140M, shares: 4));
-        orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "bid", price: 130M, shares: 2));
-        orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "bid", price: 125M, shares: 6));
-        orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "bid", price: 120M, shares: 2));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 150M, shares: 2));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 155M, shares: 5));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 165M, shares: 3));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 170M, shares: 1));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 140M, shares: 4));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 130M, shares: 2));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 125M, shares: 6));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 120M, shares: 2));
 
-        //orderBook.View();
-
+        Console.Clear();
         while (true)
         {
+            Console.WriteLine($"Welcome to the trading floor ({tradingTicker}):\n");
+            OrderBookPrint(orderBook);
+            Console.WriteLine("");
+
             // Enter ticker
             string ticker = string.Empty;
             do
@@ -91,26 +94,46 @@ internal class Program
             while (isValidShare == false || share <= 0);
 
             // Enter order type
-            string orderType;
-
+            OrderType orderType;
             do
             {
                 Console.Write("Enter order type (ask/bid): ");
-                orderType = Console.ReadLine();
+                string userInput = Console.ReadLine();
+                
+                if (userInput == "ask")
+                {
+                    orderType = OrderType.ask;
+                } else if (userInput == "bid")
+                {
+                    orderType = OrderType.bid;
+                }
+                else throw new InvalidOperationException("Order type must be either \"ask\" or \"bid\"");
 
-            } while (orderType != "ask" && orderType != "bid");
+            } while (orderType != OrderType.ask && orderType != OrderType.bid);
 
-            Order order = new(tickerSymbol: ticker, orderType: orderType, price: price, shares: share);
+            Order order = new(tickerSymbol: ticker, type: orderType, price: price, shares: share);
             orderBook.Add(order: order);
 
-            if (orderBook.Spread() <= 0)
-            {
-                orderBook.Match();
-            }
-
-            
-
-            //orderBook.View();
+            if (orderBook.Spread() <= 0) orderBook.Match();
         }         
+    }
+
+    private static void OrderBookPrint(OrderBook orderBook)
+    {
+        Console.WriteLine("Price\u0020\u0020|\u0020Shares");
+        Console.WriteLine("---------------");
+
+        for (int i = orderBook.Orders[OrderType.ask].Count - 1; i >= 0; i--) 
+        {
+            Order order = orderBook.Orders[OrderType.ask][i];
+            Console.WriteLine($"\u0020\u0020{order.Price}\u0020\u0020|\u0020\u0020{order.Shares}");
+        }
+        
+        Console.WriteLine("---------------");
+        for (int i = 0; i < orderBook.Orders[OrderType.bid].Count; i++) 
+        {
+            Order order = orderBook.Orders[OrderType.bid][i];
+            Console.WriteLine($"\u0020\u0020{order.Price}\u0020\u0020|\u0020\u0020{order.Shares}");
+        }
     }
 }

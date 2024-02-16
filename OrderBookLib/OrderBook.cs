@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace OrderBookLib;
 
+public enum OrderType
+{
+    ask,
+    bid
+}
+
 public class OrderBook
 {
-    public Dictionary<string,List<Order>> Orders { get; set; } = new()
+    public Dictionary<OrderType,List<Order>> Orders { get; set; } = new()
     {
-        {"ask", []},
-        {"bid", []}
+        {OrderType.ask, []},
+        {OrderType.bid, []}
     };
 
     private delegate bool Callback(decimal a, decimal b);
@@ -20,65 +26,69 @@ public class OrderBook
     {
         Callback stop;
 
-        if (order.OrderType == "ask")
+        if (order.Type == OrderType.ask)
         {
-            stop = (a, b) => {if (a < b) return true; else return false;};
+            stop = (a, b) => { return a < b; };
         }
-        else if (order.OrderType == "bid")
+        else if (order.Type == OrderType.bid)
         {
-            stop = (a, b) => {if (a > b) return true; else return false;};
+            stop = (a, b) => { return a > b; };
         }
-        else throw new Exception();
+        else throw new InvalidOperationException("Order type must be either \"ask\" or \"bid\"");
         
         int i = 0;
-        for (; (i < Orders[order.OrderType].Count && !stop(order.Price, Orders[order.OrderType][i].Price)); i++);
-        Orders[order.OrderType].Insert(i, order);
-
+        int depthOfMarket = Orders[order.Type].Count;
+        for (; i < depthOfMarket; i++)
+        {
+            decimal nextOrderPrice = Orders[order.Type][i].Price;
+            if (stop(order.Price, nextOrderPrice)) break; 
+        }
+        Orders[order.Type].Insert(i, order);
     }
 
     public void Match()
     {
         int sharesDelta;
 
-        sharesDelta = Orders["ask"][0].Shares - Orders["bid"][0].Shares;
+        sharesDelta = Orders[OrderType.ask][0].Shares - Orders[OrderType.bid][0].Shares;
 
         if (sharesDelta > 0)
         {
             // delete bid
-            Order deletedOrder = Orders["bid"][0];
-            Orders["bid"].RemoveAt(0);
+            Order deletedOrder = Orders[OrderType.bid][0];
+            Orders[OrderType.bid].RemoveAt(0);
 
             Console.WriteLine($"Deleted bid: {deletedOrder}");
 
             // update ask
-            Order updatedOrder = Orders["ask"][0];
+            Order updatedOrder = Orders[OrderType.ask][0];
             updatedOrder.UpdateShares(sharesDelta);
 
-            Orders["ask"][0] = updatedOrder;
+            Orders[OrderType.ask][0] = updatedOrder;
         }
         else if (sharesDelta < 0)
         {
             // delete ask
-            Order deletedOrder = Orders["ask"][0];
-            Orders["ask"].RemoveAt(0);
+            Order deletedOrder = Orders[OrderType.ask][0];
+            Orders[OrderType.ask].RemoveAt(0);
 
             Console.WriteLine($"Deleted ask: {deletedOrder}");
 
             // update bid
-            Order updatedOrder = Orders["bid"][0];
+            Order updatedOrder = Orders[OrderType.bid][0];
             updatedOrder.UpdateShares(Math.Abs(sharesDelta));
 
-            Orders["bid"][0] = updatedOrder;
+            Orders[OrderType.bid][0] = updatedOrder;
         }
         else if (sharesDelta == 0)
         {
             // delete ask
-            Order deletedOrderAsk = Orders["ask"][0];
-            Orders["ask"].RemoveAt(0);
+            Order deletedOrderAsk = Orders[OrderType.ask][0];
+            Orders[OrderType.ask].RemoveAt(0);
 
             // delete bid
-            Order deletedOrderBid = Orders["bid"][0];
-            Orders["bid"].RemoveAt(0);
+            Order deletedOrderBid = Orders[OrderType.bid][0];
+            Orders[OrderType.bid].RemoveAt(0);
 
             Console.WriteLine($"Deleted ask: {deletedOrderAsk}");
             Console.WriteLine($"Deleted bid: {deletedOrderBid}");
@@ -89,9 +99,9 @@ public class OrderBook
     {
         decimal? output = null;
 
-        if (Orders["ask"].Count != 0 && Orders["bid"].Count != 0)
+        if (Orders[OrderType.ask].Count != 0 && Orders[OrderType.bid].Count != 0)
         {
-            output = Orders["ask"][0].Price - Orders["bid"][0].Price;
+            output = Orders[OrderType.ask][0].Price - Orders[OrderType.bid][0].Price;
         }
 
         return output;

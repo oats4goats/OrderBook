@@ -9,14 +9,14 @@ namespace OrderBookLib;
 public class Order
 {
     public string TickerSymbol { get; private set; }
-    public string OrderType { get; private set; }
+    public OrderType Type { get; private set; }
     public decimal Price { get; private set; }
     public int Shares { get; private set; }
 
-    public Order(string tickerSymbol, string orderType, decimal price, int shares)
+    public Order(string tickerSymbol, OrderType type, decimal price, int shares)
     {
         TickerSymbol = tickerSymbol;
-        OrderType = orderType;
+        Type = type;
         Price = price;
         Shares = shares;
     }
