@@ -8,38 +8,32 @@ namespace OrderBookLib;
 
 public class OrderBook
 {
-    public Dictionary<string,List<Order>> Orders { get; set; }
+    public Dictionary<string,List<Order>> Orders { get; set; } = new()
+    {
+        {"ask", []},
+        {"bid", []}
+    };
+
+    private delegate bool Callback(decimal a, decimal b);
 
     public void Add(Order order)
     {
-        if (Orders.ContainsKey(order.OrderType)) 
-        {
-            int i;
+        Callback stop;
 
-            for (i = 0; i < Orders[order.OrderType].Count; i++)
-            {
-                if (order.OrderType == "ask")
-                {
-                    if (order.Price < Orders[order.OrderType][i].Price)
-                    {
-                        break;
-                    }
-                }
-                else if (order.OrderType == "bid")
-                {
-                    if (order.Price > Orders[order.OrderType][i].Price)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            Orders[order.OrderType].Insert(i, order);
-        }
-        else
+        if (order.OrderType == "ask")
         {
-            Orders.Add(order.OrderType, new List<Order>() { order });
+            stop = (a, b) => {if (a < b) return true; else return false;};
         }
+        else if (order.OrderType == "bid")
+        {
+            stop = (a, b) => {if (a > b) return true; else return false;};
+        }
+        else throw new Exception();
+        
+        int i = 0;
+        for (; (i < Orders[order.OrderType].Count && !stop(order.Price, Orders[order.OrderType][i].Price)); i++);
+        Orders[order.OrderType].Insert(i, order);
+
     }
 
     public void Match()

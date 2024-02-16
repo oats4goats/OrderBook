@@ -56,7 +56,7 @@ internal class Program
         orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "bid", price: 125M, shares: 6));
         orderBook.Add(order: new Order(tickerSymbol: "MSFT", orderType: "bid", price: 120M, shares: 2));
 
-        orderBook.View();
+        //orderBook.View();
 
         while (true)
         {
@@ -108,7 +108,9 @@ internal class Program
                 orderBook.Match();
             }
 
-            orderBook.View();
+            
+
+            //orderBook.View();
         }         
     }
 }
