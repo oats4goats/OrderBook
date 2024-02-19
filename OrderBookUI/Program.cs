@@ -47,14 +47,14 @@ internal class Program
         OrderBook orderBook = new();
 
         // Debug
-        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 150M, shares: 2));
-        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 155M, shares: 5));
-        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 165M, shares: 3));
-        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 170M, shares: 1));
-        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 140M, shares: 4));
-        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 130M, shares: 2));
-        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 125M, shares: 6));
-        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 120M, shares: 2));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 150M, size: 2));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 155M, size: 5));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 165M, size: 3));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.ask, price: 170M, size: 1));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 140M, size: 4));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 130M, size: 2));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 125M, size: 6));
+        orderBook.Add(order: new Order(tickerSymbol: tradingTicker, type: OrderType.bid, price: 120M, size: 2));
 
         Console.Clear();
         while (true)
@@ -111,10 +111,10 @@ internal class Program
 
             } while (orderType != OrderType.ask && orderType != OrderType.bid);
 
-            Order order = new(tickerSymbol: ticker, type: orderType, price: price, shares: share);
+            Order order = new(tickerSymbol: ticker, type: orderType, price: price, size: share);
             orderBook.Add(order: order);
 
-            if (orderBook.Spread() <= 0) orderBook.Match();
+            orderBook.Match();
         }         
     }
 
@@ -126,14 +126,14 @@ internal class Program
         for (int i = orderBook.Orders[OrderType.ask].Count - 1; i >= 0; i--) 
         {
             Order order = orderBook.Orders[OrderType.ask][i];
-            Console.WriteLine($"\u0020\u0020{order.Price}\u0020\u0020|\u0020\u0020{order.Shares}");
+            Console.WriteLine($"\u0020\u0020{order.Price}\u0020\u0020|\u0020\u0020{order.Size}");
         }
         
         Console.WriteLine("---------------");
         for (int i = 0; i < orderBook.Orders[OrderType.bid].Count; i++) 
         {
             Order order = orderBook.Orders[OrderType.bid][i];
-            Console.WriteLine($"\u0020\u0020{order.Price}\u0020\u0020|\u0020\u0020{order.Shares}");
+            Console.WriteLine($"\u0020\u0020{order.Price}\u0020\u0020|\u0020\u0020{order.Size}");
         }
     }
 }

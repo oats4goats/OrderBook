@@ -11,14 +11,14 @@ public class Order
     public string TickerSymbol { get; private set; }
     public OrderType Type { get; private set; }
     public decimal Price { get; private set; }
-    public int Shares { get; private set; }
+    public int Size { get; private set; }
 
-    public Order(string tickerSymbol, OrderType type, decimal price, int shares)
+    public Order(string tickerSymbol, OrderType type, decimal price, int size)
     {
         TickerSymbol = tickerSymbol;
         Type = type;
         Price = price;
-        Shares = shares;
+        Size = size;
     }
 
     public void UpdatePrice(decimal price)
@@ -26,9 +26,9 @@ public class Order
         throw new NotImplementedException();
     }
 
-    public void UpdateShares(int shares)
+    public void UpdateSize(int size)
     {
-        Shares = shares;
+        Size = size;
     }
 
     public static void CheckTicker(string ticker)

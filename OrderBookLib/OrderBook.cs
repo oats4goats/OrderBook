@@ -48,50 +48,17 @@ public class OrderBook
 
     public void Match()
     {
-        int sharesDelta;
+        int minSize = 0;
 
-        sharesDelta = Orders[OrderType.ask][0].Shares - Orders[OrderType.bid][0].Shares;
-
-        if (sharesDelta > 0)
+        while (Spread() <= 0)
         {
-            // delete bid
-            Order deletedOrder = Orders[OrderType.bid][0];
-            Orders[OrderType.bid].RemoveAt(0);
+            minSize = Math.Min(Orders[OrderType.ask][0].Size, Orders[OrderType.bid][0].Size);
+            
+            Orders[OrderType.ask][0].UpdateSize(Orders[OrderType.ask][0].Size - minSize);
+            Orders[OrderType.bid][0].UpdateSize(Orders[OrderType.bid][0].Size - minSize);
 
-            Console.WriteLine($"Deleted bid: {deletedOrder}");
-
-            // update ask
-            Order updatedOrder = Orders[OrderType.ask][0];
-            updatedOrder.UpdateShares(sharesDelta);
-
-            Orders[OrderType.ask][0] = updatedOrder;
-        }
-        else if (sharesDelta < 0)
-        {
-            // delete ask
-            Order deletedOrder = Orders[OrderType.ask][0];
-            Orders[OrderType.ask].RemoveAt(0);
-
-            Console.WriteLine($"Deleted ask: {deletedOrder}");
-
-            // update bid
-            Order updatedOrder = Orders[OrderType.bid][0];
-            updatedOrder.UpdateShares(Math.Abs(sharesDelta));
-
-            Orders[OrderType.bid][0] = updatedOrder;
-        }
-        else if (sharesDelta == 0)
-        {
-            // delete ask
-            Order deletedOrderAsk = Orders[OrderType.ask][0];
-            Orders[OrderType.ask].RemoveAt(0);
-
-            // delete bid
-            Order deletedOrderBid = Orders[OrderType.bid][0];
-            Orders[OrderType.bid].RemoveAt(0);
-
-            Console.WriteLine($"Deleted ask: {deletedOrderAsk}");
-            Console.WriteLine($"Deleted bid: {deletedOrderBid}");
+            if (Orders[OrderType.ask][0].Size == 0) Orders[OrderType.ask].RemoveAt(0);
+            if (Orders[OrderType.bid][0].Size == 0) Orders[OrderType.bid].RemoveAt(0);
         }
     }
 
