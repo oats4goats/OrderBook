@@ -14,25 +14,25 @@ public enum OrderType
 
 public class OrderBook
 {
+    public event EventHandler<string> OrdersMatched;
+
     public Dictionary<OrderType,List<Order>> Orders { get; set; } = new()
     {
         {OrderType.ask, []},
         {OrderType.bid, []}
     };
 
-    private delegate bool Callback(decimal a, decimal b);
-
     public void Add(Order order)
     {
-        Callback stop;
+        Func<decimal, decimal, bool> indexIsFound;
 
         if (order.Type == OrderType.ask)
         {
-            stop = (a, b) => { return a < b; };
+            indexIsFound = (a, b) => { return a < b; };
         }
         else if (order.Type == OrderType.bid)
         {
-            stop = (a, b) => { return a > b; };
+            indexIsFound = (a, b) => { return a > b; };
         }
         else throw new InvalidOperationException("Order type must be either \"ask\" or \"bid\"");
         
@@ -41,7 +41,7 @@ public class OrderBook
         for (; i < depthOfMarket; i++)
         {
             decimal nextOrderPrice = Orders[order.Type][i].Price;
-            if (stop(order.Price, nextOrderPrice)) break; 
+            if (indexIsFound(order.Price, nextOrderPrice)) break; 
         }
         Orders[order.Type].Insert(i, order);
     }
